@@ -1,0 +1,8 @@
+<testsuite failures="0" name="src/test/java/info/treyturner/karate/reprex/PostmanEcho.feature" skipped="0" tests="1" time="2.788257">
+  <testcase classname="src.test.java.info.treyturner.karate.reprex.PostmanEcho" name="Simple GET request" time="2.788257">
+    <system-out>* url 'https://postman-echo.com' .......................................... passed
+Given path 'get' .......................................................... passed
+When method GET ........................................................... passed
+Then status 200 ........................................................... passed</system-out>
+  </testcase>
+</testsuite>

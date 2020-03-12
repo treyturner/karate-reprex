@@ -12,4 +12,3 @@ gradle-app.setting
 
 # Ignore Gradle build output directory
 build
-target
