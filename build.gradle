@@ -1,0 +1,61 @@
+apply plugin: 'idea'
+apply plugin: 'groovy'
+
+group = 'info.treyturner.karate.reprex'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(Test).all {
+    testLogging { // Log these test events to console
+        events "started", "skipped", "passed", "failed", "standardOut"
+    }
+    outputs.upToDateWhen { false } // Always run tests
+}
+
+ext {
+    karateVersion = '0.9.5'
+    slf4jVersion = '1.7.30'
+    logbackVersion = '1.2.3'
+}
+
+dependencies {
+    // Karate
+    implementation "com.intuit.karate:karate-junit5:$karateVersion"
+    implementation "com.intuit.karate:karate-apache:$karateVersion"
+    implementation "org.junit.platform:junit-platform-engine:1.5.2"
+    implementation "org.junit.jupiter:junit-jupiter:5.5.2"
+
+    // Slf4j & Logback
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+
+    systemProperty 'karate.options', System.getProperty('karate.options')
+    systemProperty 'karate.env', System.getProperty('karate.env', 'test')
+
+    outputs.upToDateWhen { false }
+
+    reports.junitXml.destination(new File("$buildDir/reports/junit"))
+    reports.html.destination(new File("$buildDir/reports/gradle"))
+}
