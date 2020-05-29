@@ -18,10 +18,10 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>    
+
+    <logger name="com.intuit.karate" level="DEBUG"/>
    
-    <logger name="com.intuit" level="DEBUG"/>
-   
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>

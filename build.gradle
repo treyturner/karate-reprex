@@ -1,27 +1,24 @@
 apply plugin: 'idea'
-apply plugin: 'groovy'
+apply plugin: 'java'
 
 group = 'info.treyturner.karate.reprex'
 
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
-tasks.withType(Test).all {
-    testLogging { // Log these test events to console
-        events "started", "skipped", "passed", "failed", "standardOut"
-    }
-    outputs.upToDateWhen { false } // Always run tests
-}
-
 ext {
-    karateVersion = '0.9.5'
+    karateVersion = '0.9.6.RC2'
+    junitPlatformVersion = '1.6.2'
+    junitJupiterVersion = '5.6.2'
     slf4jVersion = '1.7.30'
     logbackVersion = '1.2.3'
 }
@@ -30,8 +27,8 @@ dependencies {
     // Karate
     implementation "com.intuit.karate:karate-junit5:$karateVersion"
     implementation "com.intuit.karate:karate-apache:$karateVersion"
-    implementation "org.junit.platform:junit-platform-engine:1.5.2"
-    implementation "org.junit.jupiter:junit-jupiter:5.5.2"
+    implementation "org.junit.platform:junit-platform-engine:$junitPlatformVersion"
+    implementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
 
     // Slf4j & Logback
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
@@ -48,14 +45,23 @@ sourceSets {
     }
 }
 
-test {
+tasks.withType(Test).all {
     useJUnitPlatform()
 
-    systemProperty 'karate.options', System.getProperty('karate.options')
-    systemProperty 'karate.env', System.getProperty('karate.env', 'test')
+    testLogging { // Log these test events to console
+        events "started", "skipped", "passed", "failed", "standardOut"
+    }
 
-    outputs.upToDateWhen { false }
+    outputs.upToDateWhen { false } // Always run tests
+
+    systemProperty 'karate.options', System.getProperty('karate.options')
+    systemProperty 'karate.env', System.getProperty('karate.env')
 
     reports.junitXml.destination(new File("$buildDir/reports/junit"))
     reports.html.destination(new File("$buildDir/reports/gradle"))
+}
+
+task karateDebug(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'com.intuit.karate.cli.Main'
 }
