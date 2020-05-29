@@ -94,7 +94,7 @@ HTTP requests and responses are not logged to console when `report` configuratio
   
   Process finished with exit code 0
   ```
-- Based on my previous [issue #1078](https://github.com/intuit/karate/issues/1078), request/response logging in reports and console should be decoupled, but in addressing the previous former issue, logging to console was also affected.
+- Based on my previous [issue #1078](https://github.com/intuit/karate/issues/1078), request/response logging in reports and console should be decoupled, but in addressing the previous issue, logging to console was also affected.
 
 [KarateRunner.java]: src/test/java/info/treyturner/karate/reprex/KarateRunner.java
 [karate-config.js]: src/test/resources/karate-config.js
